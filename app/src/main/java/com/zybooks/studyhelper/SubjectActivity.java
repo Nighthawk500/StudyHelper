@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zybooks.studyhelper.model.Subject;
 import com.zybooks.studyhelper.viewmodel.SubjectListViewModel;
 import java.util.List;
-
+import androidx.lifecycle.ViewModelProvider;
 public class SubjectActivity extends AppCompatActivity
         implements SubjectDialogFragment.OnSubjectEnteredListener {
 
@@ -28,7 +28,7 @@ public class SubjectActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
 
-        mSubjectListViewModel = new SubjectListViewModel(getApplication());
+        mSubjectListViewModel = new ViewModelProvider(this).get(SubjectListViewModel.class);
 
         mSubjectColors = getResources().getIntArray(R.array.subjectColors);
 
@@ -42,6 +42,11 @@ public class SubjectActivity extends AppCompatActivity
 
         // Show the subjects
         updateUI(mSubjectListViewModel.getSubjects());
+
+        // Call updateUI() when the subject list changes
+        mSubjectListViewModel.getSubjects().observe(this, subjects -> {
+            updateUI(subjects);
+        });
     }
 
     private void updateUI(List<Subject> subjectList) {

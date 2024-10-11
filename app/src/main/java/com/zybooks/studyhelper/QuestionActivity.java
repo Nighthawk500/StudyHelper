@@ -15,6 +15,8 @@ import com.zybooks.studyhelper.model.Question;
 import com.zybooks.studyhelper.model.Subject;
 import com.zybooks.studyhelper.viewmodel.QuestionListViewModel;
 import java.util.List;
+import androidx.lifecycle.ViewModelProvider;
+
 
 public class QuestionActivity extends AppCompatActivity {
 
@@ -56,8 +58,12 @@ public class QuestionActivity extends AppCompatActivity {
         mSubject.setId(subjectId);
 
         // Get all questions for this subject
-        mQuestionListViewModel = new QuestionListViewModel(getApplication());
-        mQuestionList = mQuestionListViewModel.getQuestions(subjectId);
+        mQuestionListViewModel = new ViewModelProvider(this).get(QuestionListViewModel.class);
+        mQuestionListViewModel.loadQuestions(subjectId);
+        mQuestionListViewModel.questionListLiveData.observe(this, questions -> {
+            mQuestionList = questions;
+            updateUI();
+        });
 
         // Display question
         updateUI();

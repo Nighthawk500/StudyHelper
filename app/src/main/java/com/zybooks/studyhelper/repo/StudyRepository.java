@@ -1,5 +1,7 @@
 package com.zybooks.studyhelper.repo;
 
+import androidx.lifecycle.LiveData;
+
 import android.content.Context;
 import androidx.room.Room;
 import com.zybooks.studyhelper.model.Question;
@@ -66,11 +68,11 @@ public class StudyRepository {
         subject.setId(subjectId);
     }
 
-    public Subject getSubject(long subjectId) {
+    public LiveData<Subject> getSubject(long subjectId) {
         return mSubjectDao.getSubject(subjectId);
     }
 
-    public List<Subject> getSubjects() {
+    public LiveData<List<Subject>> getSubjects() {
         return mSubjectDao.getSubjects();
     }
 
@@ -78,11 +80,11 @@ public class StudyRepository {
         mSubjectDao.deleteSubject(subject);
     }
 
-    public Question getQuestion(long questionId) {
+    public LiveData<Question> getQuestion(long questionId) {
         return mQuestionDao.getQuestion(questionId);
     }
 
-    public List<Question> getQuestions(long subjectId) {
+    public LiveData<List<Question>> getQuestions(long subjectId) {
         return mQuestionDao.getQuestions(subjectId);
     }
 
